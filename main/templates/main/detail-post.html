@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+    <div class="alert alert-light">
+      <h1>{{ object.title }}</h1>
+      <p>{{ object.content|safe }}</p>
+      <div class="row">
+        <div class="mt-2">
+          <span class="text-muted">Публикация: {{ object.date|date:"d E Y в H:i" }}</span>
+          <p><b>Автор:</b> {{ object.author }}</p>
+        </div>
+      </div>
+      {% if object.author == user %}
+        <hr>
+        <a href="{% url 'post-update' object.id %}" class="btn btn-info">Обновить статью</a>
+        <a href="{% url 'post-delete' object.id %}" class="btn btn-danger">Удалить статью</a>
+      {% endif %}
+      {% if not user.is_authenticated %}
+        <p>Авторизируйтесь, что бы писать комментарии!</p>
+      {% else %}
+        <hr>
+        <a href="{% url 'comment-add' %}" class="btn btn-info"> Написать комментарий </a>
+      {% endif %}
+    </div>
+{% endblock %}
